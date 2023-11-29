@@ -1,5 +1,4 @@
--- CreateTable
-CREATE TABLE "todos" (
+CREATE TABLE IF NOT EXISTS "todos"  (
     "id" SERIAL NOT NULL,
     "text" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

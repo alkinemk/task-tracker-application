@@ -6,8 +6,9 @@ import { DeleteForm } from "@/app/delete-form";
 import { EditForm } from "@/app/edit-form";
 
 export function Tasks({ todos }: { todos: Task[] }) {
-  const [selectedSort, setSelectedSort] = useState("CoTn");
+  const [selectedSort, setSelectedSort] = useState("alphabetically");
   const [sortedArray, setSortedArray] = useState<Task[]>(todos);
+  const [isSorting, setIsSorting] = useState(true);
 
   const sortingFunctions: Record<string, (a: Task, b: Task) => number> = {
     alphabetically: (a, b) => a.text.localeCompare(b.text),
@@ -24,11 +25,12 @@ export function Tasks({ todos }: { todos: Task[] }) {
   useEffect(() => {
     const newArray = todos.slice().sort(sortingFunctions[selectedSort]);
     setSortedArray(newArray);
+    setIsSorting(false);
   }, [selectedSort, todos]);
 
   return (
     <>
-      {sortedArray.length > 0 && (
+      {sortedArray.length > 0 && !isSorting && (
         <>
           <div className="flex justify-between mt-2.5">
             <div className="font-bold py-0.5">Your tasks</div>
