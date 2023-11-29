@@ -2,8 +2,7 @@
 
 import { z } from "zod";
 import prisma from "@/app/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,7 +24,7 @@ export async function POST(request: NextRequest) {
         data: { text: data.todo, updatedAt: new Date() },
       });
 
-      return Response.json({
+      return NextResponse.json({
         message: `Edited todo ${data.todo}`,
         success: true,
       });
@@ -34,7 +33,7 @@ export async function POST(request: NextRequest) {
     }
   } catch (error) {
     console.error("Error processing form data:", error);
-    return Response.json({
+    return NextResponse.json({
       success: false,
       error: "Internal Server Error",
     });
