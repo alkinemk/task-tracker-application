@@ -1,8 +1,11 @@
+"use server";
+
 import { z } from "zod";
 import prisma from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { NextRequest } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
 
@@ -21,8 +24,6 @@ export async function POST(request: Request) {
         where: { id: data.id },
         data: { text: data.todo, updatedAt: new Date() },
       });
-
-      revalidatePath("/");
 
       return Response.json({
         message: `Edited todo ${data.todo}`,

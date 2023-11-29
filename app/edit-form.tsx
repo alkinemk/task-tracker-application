@@ -2,8 +2,9 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect, useState } from "react";
-import { editTodo } from "./actions";
+// import { editTodo } from "./actions";
 import { MdEdit, MdClose } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 interface ModalProps {
   isOpen: boolean;
@@ -15,14 +16,16 @@ interface ModalProps {
 
 function Modal({ isOpen, onClose, id, todo }: ModalProps) {
   const { pending } = useFormStatus();
+  const router = useRouter();
 
   async function onSubmit(formData: FormData) {
     try {
-      await fetch("http://localhost:3000/api/editTask", {
+      const res = await fetch("http://localhost:3000/api/editTask", {
         method: "post",
         body: formData,
       });
       onClose();
+      router.refresh();
     } catch (error) {
       console.error("Error submitting form data:", error);
     }
