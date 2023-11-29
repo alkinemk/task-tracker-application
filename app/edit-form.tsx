@@ -13,23 +13,26 @@ interface ModalProps {
   todo: string;
 }
 
-const initialState = { message: null, success: null };
-
 function Modal({ isOpen, onClose, id, todo }: ModalProps) {
-  const [state, formAction] = useFormState(editTodo, initialState);
   const { pending } = useFormStatus();
 
-  useEffect(() => {
-    if (state?.success === true) {
+  async function onSubmit(formData: FormData) {
+    try {
+      await fetch("http://localhost:3000/api/editTask", {
+        method: "post",
+        body: formData,
+      });
       onClose();
+    } catch (error) {
+      console.error("Error submitting form data:", error);
     }
-  }, [state]);
+  }
 
   return (
     <>
       {isOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-50 ">
-          <form action={formAction} className="bg-white p-4 rounded-md">
+          <form action={onSubmit} className="bg-white p-4 rounded-md">
             <div className="flex justify-end text-white">
               <button
                 className="bg-black rounded px-1.5 py-2
@@ -52,10 +55,9 @@ function Modal({ isOpen, onClose, id, todo }: ModalProps) {
               required
             />
             <input type="hidden" name="id" value={id} />
-            <input type="hidden" name="todo" value={todo} />
-            <p aria-live="polite" className="sr-only" role="status">
+            {/* <p aria-live="polite" className="sr-only" role="status">
               {state?.message}
-            </p>
+            </p> */}
             <button
               type="submit"
               aria-disabled={pending}

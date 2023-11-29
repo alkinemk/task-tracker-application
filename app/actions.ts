@@ -27,28 +27,28 @@ export async function createTodo(prevState: any, formData: FormData) {
   }
 }
 
-export async function editTodo(prevState: any, formData: FormData) {
-  const schema = z.object({
-    id: z.coerce.number(),
-    todo: z.string().min(1),
-  });
-  const data = schema.parse({
-    id: formData.get("id"),
-    todo: formData.get("todo"),
-  });
+// export async function editTodo(prevState: any, formData: FormData) {
+//   const schema = z.object({
+//     id: z.coerce.number(),
+//     todo: z.string().min(1),
+//   });
+//   const data = schema.parse({
+//     id: formData.get("id"),
+//     todo: formData.get("todo"),
+//   });
 
-  try {
-    await prisma.todos.update({
-      where: { id: data.id },
-      data: { text: data.todo, updatedAt: new Date() },
-    });
+//   try {
+//     await prisma.todos.update({
+//       where: { id: data.id },
+//       data: { text: data.todo, updatedAt: new Date() },
+//     });
 
-    revalidatePath("/");
-    return { message: `Edited todo ${data.todo}`, success: true };
-  } catch (e) {
-    return { message: "Failed to edit todo" };
-  }
-}
+//     revalidatePath("/");
+//     return { message: `Edited todo ${data.todo}`, success: true };
+//   } catch (e) {
+//     return { message: "Failed to edit todo" };
+//   }
+// }
 
 export async function deleteTodo(prevState: any, formData: FormData) {
   const schema = z.object({
